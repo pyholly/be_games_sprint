@@ -23,7 +23,7 @@ afterAll(() => {
   db.end();
 });
 
-describe.only("/api/categories", () => {
+describe("/api/categories", () => {
   test("GET - status: 200 - respond with all the properties", () => {
     return request(app)
       .get("/api/categories")
@@ -36,6 +36,8 @@ describe.only("/api/categories", () => {
         });
       });
   });
+});
+describe("/api/mispelt", () => {
   test("should return 404 if categories is mispelt", () => {
     return request(app)
       .get("/api/categoris")
