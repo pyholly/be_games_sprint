@@ -1,10 +1,13 @@
 const express = require("express");
 const app = express();
 const { getCategories } = require("./controllers/categories.controller");
+const { getEndPoints } = require("./controllers/api.controller");
 
 module.exports = app;
 
 app.get("/api/categories", getCategories);
+
+app.get("/api", getEndPoints);
 
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "request not found" });
