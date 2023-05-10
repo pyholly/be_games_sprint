@@ -2,10 +2,13 @@ const express = require("express");
 const app = express();
 const { getCategories } = require("./controllers/categories.controller");
 const { getReviewId } = require("./controllers/reviews.controller");
+const { getEndPoints } = require("./controllers/api.controller");
 
 module.exports = app;
 
 app.get("/api/categories", getCategories);
+
+app.get("/api", getEndPoints);
 
 app.get("/api/reviews/:review_id", getReviewId);
 
