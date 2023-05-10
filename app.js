@@ -16,11 +16,15 @@ app.all("*", (req, res) => {
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
     res.status(err.status).send({ msg: err.msg });
-  } else if (err.code === "22P02") {
-    console.log(err + "< err1");
+  } else next(err);
+});
+
+app.use((err, req, res, next) => {
+  if (err.code === "22P02") {
     res.status(400).send({ msg: "bad request" });
-  } else {
-    console.log(err + "< err2");
-    res.status(500).send("Server Error!");
-  }
+  } else next(err);
+});
+
+app.use((err, req, res, next) => {
+  res.status(500).send("Server Error!");
 });

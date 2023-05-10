@@ -54,18 +54,16 @@ describe("/api/reviews/:review_id", () => {
       .get("/api/reviews/2")
       .expect(200)
       .then((response) => {
-        Object.values(response.body.review).forEach((review) => {
-          expect(review.review_id).toBe(2);
-          expect(typeof review.review_id).toBe("number");
-          expect(typeof review.title).toBe("string");
-          expect(typeof review.review_body).toBe("string");
-          expect(typeof review.designer).toBe("string");
-          expect(typeof review.review_img_url).toBe("string");
-          expect(typeof review.votes).toBe("number");
-          expect(typeof review.category).toBe("string");
-          expect(typeof review.owner).toBe("string");
-          expect(typeof review.created_at).toBe("string");
-        });
+        expect(response.body.review[0].review_id).toBe(2);
+        expect(typeof response.body.review[0].review_id).toBe("number");
+        expect(typeof response.body.review[0].title).toBe("string");
+        expect(typeof response.body.review[0].review_body).toBe("string");
+        expect(typeof response.body.review[0].designer).toBe("string");
+        expect(typeof response.body.review[0].review_img_url).toBe("string");
+        expect(typeof response.body.review[0].votes).toBe("number");
+        expect(typeof response.body.review[0].category).toBe("string");
+        expect(typeof response.body.review[0].owner).toBe("string");
+        expect(typeof response.body.review[0].created_at).toBe("string");
       });
   });
   test("GET - status: 400 when client inputs a bad request", () => {
