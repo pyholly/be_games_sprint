@@ -47,3 +47,26 @@ describe("/api/mispelt", () => {
       });
   });
 });
+
+describe("/api", () => {
+  test("GET - status: 200 - respond with JSON object", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((response) => {
+        expect(typeof response.body.object).toBe("object");
+      });
+  });
+  test("GET - status: 200 - respond with description property", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((response) => {
+        Object.values(response.body.object).forEach((obj) => {
+          expect(typeof obj.description).toBe("string");
+          expect(Array.isArray(obj.queries)).toBe(true);
+          expect(typeof obj.exampleResponse).toBe("object");
+        });
+      });
+  });
+});
