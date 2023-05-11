@@ -107,36 +107,6 @@ describe("/api/reviews/:review_id", () => {
   });
 });
 
-describe("/api/reviews/2/comments", () => {
-  test("GET - status : 200 - responds with all properties", () => {
-    return request(app)
-      .get("/api/reviews/2/comments")
-      .expect(200)
-      .then((response) => {
-        response.body.comments.forEach((comment) => {
-          expect(comment.review_id).toBe(2);
-          expect(typeof comment.review_id).toBe("number");
-          expect(typeof comment.comment_id).toBe("number");
-          expect(typeof comment.votes).toBe("number");
-          expect(typeof comment.created_at).toBe("string");
-          expect(typeof comment.author).toBe("string");
-          expect(typeof comment.body).toBe("string");
-        });
-      });
-  });
-});
-//   test("GET - status : 200 comments sorted by DESC", () => {
-//     return request(app)
-//       .get("/api/reviews/2/comments")
-//       .expect(200)
-//       .then((response) => {
-//         expect(response.body.comments).toBeSortedBy("created_at", {
-//           descending: true,
-//         });
-//       });
-//   });
-// });
-
 describe("/api/reviews", () => {
   test("GET - status: 200 - responds with all properties", () => {
     return request(app)
@@ -165,6 +135,51 @@ describe("/api/reviews", () => {
         expect(response.body.reviews).toBeSortedBy("created_at", {
           descending: true,
         });
+      });
+  });
+});
+
+describe("/api/reviews/2/comments", () => {
+  test("GET - status : 200 - responds with all properties", () => {
+    return request(app)
+      .get("/api/reviews/2/comments")
+      .expect(200)
+      .then((response) => {
+        response.body.comments.forEach((comment) => {
+          expect(comment.review_id).toBe(2);
+          expect(typeof comment.review_id).toBe("number");
+          expect(typeof comment.comment_id).toBe("number");
+          expect(typeof comment.votes).toBe("number");
+          expect(typeof comment.created_at).toBe("string");
+          expect(typeof comment.author).toBe("string");
+          expect(typeof comment.body).toBe("string");
+        });
+      });
+  });
+  test("GET - status : 200 comments sorted by DESC", () => {
+    return request(app)
+      .get("/api/reviews/2/comments")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.comments).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
+  test("GET - status: 400 when client inputs a bad request", () => {
+    return request(app)
+      .get("/api/reviews/notAnID/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("GET - status: 404 when client inputs a valid request but the id is yet to exist", () => {
+    return request(app)
+      .get("/api/reviews/1000/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No user found for Id of 1000");
       });
   });
 });

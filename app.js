@@ -16,8 +16,9 @@ app.get("/api", getEndPoints);
 
 app.get("/api/reviews/:review_id", getReviewId);
 
-app.get("/api/reviews/:review_id/comments", getCommentsById);
 app.get("/api/reviews", getReviews);
+
+app.get("/api/reviews/:review_id/comments", getCommentsById);
 
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "request not found" });

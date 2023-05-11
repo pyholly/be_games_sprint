@@ -34,10 +34,16 @@ exports.selectCommentsById = (review_id) => {
     .query(
       `SELECT * FROM comments
   WHERE comments.review_id = $1
-  ORDER BY created_at DESC;`,
+  ORDER BY created_at DESC`,
       [review_id]
     )
     .then((result) => {
+      if (result.rows.length === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: `No user found for Id of ${review_id}`,
+        });
+      }
       return result.rows;
     });
 };
