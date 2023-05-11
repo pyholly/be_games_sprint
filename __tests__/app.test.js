@@ -136,3 +136,35 @@ describe("/api/reviews/2/comments", () => {
 //       });
 //   });
 // });
+
+describe("/api/reviews", () => {
+  test("GET - status: 200 - responds with all properties", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.reviews.length).toBe(13);
+        response.body.reviews.forEach((review) => {
+          expect(typeof review.owner).toBe("string");
+          expect(typeof review.title).toBe("string");
+          expect(typeof review.review_id).toBe("number");
+          expect(typeof review.category).toBe("string");
+          expect(typeof review.review_img_url).toBe("string");
+          expect(typeof review.created_at).toBe("string");
+          expect(typeof review.votes).toBe("number");
+          expect(typeof review.designer).toBe("string");
+          expect(typeof review.comment_count).toBe("string");
+        });
+      });
+  });
+  test("GET - status 200 - sorts by date DSC", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.reviews).toBeSortedBy("created_at", {
+          descending: true,
+        });
+      });
+  });
+});
