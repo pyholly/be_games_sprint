@@ -1,7 +1,11 @@
 const express = require("express");
 const app = express();
 const { getCategories } = require("./controllers/categories.controller");
-const { getReviewId, getReviews } = require("./controllers/reviews.controller");
+const {
+  getReviewId,
+  getReviews,
+  getCommentsById,
+} = require("./controllers/reviews.controller");
 const { getEndPoints } = require("./controllers/api.controller");
 
 module.exports = app;
@@ -13,6 +17,8 @@ app.get("/api", getEndPoints);
 app.get("/api/reviews/:review_id", getReviewId);
 
 app.get("/api/reviews", getReviews);
+
+app.get("/api/reviews/:review_id/comments", getCommentsById);
 
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "request not found" });
