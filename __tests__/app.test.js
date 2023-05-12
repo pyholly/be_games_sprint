@@ -267,3 +267,33 @@ describe("POST /api/reviews/:review_id/comments", () => {
       });
   });
 });
+
+describe("PATCH /api/reviews/:review_id", () => {
+  test("patch - status : 200 -  responds with successfully updated", () => {
+    return request(app)
+      .patch("/api/reviews/1")
+      .send({ inc_votes: 2 })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.review[0].votes).toBe(3);
+      });
+  });
+  test("patch - status : 200 -  responds with all properties", () => {
+    return request(app)
+      .patch("/api/reviews/1")
+      .send({ inc_votes: 2 })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.review[0].review_id).toBe(1);
+        expect(typeof response.body.review[0].review_id).toBe("number");
+        expect(typeof response.body.review[0].votes).toBe("number");
+        expect(typeof response.body.review[0].title).toBe("string");
+        expect(typeof response.body.review[0].category).toBe("string");
+        expect(typeof response.body.review[0].designer).toBe("string");
+        expect(typeof response.body.review[0].owner).toBe("string");
+        expect(typeof response.body.review[0].review_body).toBe("string");
+        expect(typeof response.body.review[0].review_img_url).toBe("string");
+        expect(typeof response.body.review[0].created_at).toBe("string");
+      });
+  });
+});

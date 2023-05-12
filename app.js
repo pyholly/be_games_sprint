@@ -6,6 +6,7 @@ const {
   getReviews,
   getCommentsById,
   postComment,
+  updateVotes,
 } = require("./controllers/reviews.controller");
 
 const { getEndPoints } = require("./controllers/api.controller");
@@ -23,6 +24,8 @@ app.get("/api/reviews", getReviews);
 app.get("/api/reviews/:review_id/comments", getCommentsById);
 
 app.post("/api/reviews/:review_id/comments", postComment);
+
+app.patch("/api/reviews/:review_id", updateVotes);
 
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "request not found" });

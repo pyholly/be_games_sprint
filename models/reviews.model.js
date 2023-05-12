@@ -1,5 +1,5 @@
 const db = require("../db/connection");
-const { checkIdExists, checkUsernameExists } = require("../db/seeds/utils");
+const { checkIdExists } = require("../db/seeds/utils");
 
 exports.selectReviewId = (id) => {
   return db
@@ -51,7 +51,6 @@ exports.selectCommentsById = (review_id) => {
 
 exports.insertComment = (comment, id) => {
   const { username, body } = comment;
-
   if (!body && username) {
     return Promise.reject({
       status: 400,
@@ -68,4 +67,19 @@ exports.insertComment = (comment, id) => {
         return result.rows[0];
       });
   });
+};
+
+exports.changeVotes = (inc_votes, review_id) => {
+  return db
+    .query(
+      `
+  UPDATE reviews
+  SET votes = votes + $1
+  WHERE reviews.review_id = $2 RETURNING *;`,
+      [inc_votes, review_id]
+    )
+    .then((result) => {
+      console.log(result.rows);
+      return result.rows;
+    });
 };
