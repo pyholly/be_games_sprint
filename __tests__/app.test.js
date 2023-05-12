@@ -241,18 +241,7 @@ describe("POST /api/reviews/:review_id/comments", () => {
         expect(body.msg).toBe("id not found");
       });
   });
-  test("POST - status: 404 if no username provided", () => {
-    return request(app)
-      .post("/api/reviews/3/comments")
-      .send({
-        username: "",
-        body: "Sooo much funnn!",
-      })
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("please provide a username");
-      });
-  });
+
   test("POST - status: 404 if invalid username provided", () => {
     return request(app)
       .post("/api/reviews/3/comments")
@@ -265,14 +254,14 @@ describe("POST /api/reviews/:review_id/comments", () => {
         expect(body.msg).toBe("please provide valid username");
       });
   });
-  test("POST - status: 404 if no body provided", () => {
+  test("POST - status: 400 if no body provided", () => {
     return request(app)
       .post("/api/reviews/3/comments")
       .send({
         username: "mallionaire",
         body: "",
       })
-      .expect(404)
+      .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("please provide a comment");
       });

@@ -1,4 +1,3 @@
-const { checkIdExists, checkUsernameExists } = require("../db/seeds/utils");
 const {
   selectReviewId,
   selectReviews,
@@ -33,8 +32,6 @@ exports.getCommentsById = (req, res, next) => {
 exports.postComment = (req, res, next) => {
   const { review_id } = req.params;
   const comment = req.body;
-  checkIdExists(review_id).catch((err) => next(err));
-  checkUsernameExists(comment.username).catch((err) => next(err));
   insertComment(comment, review_id)
     .then((result) => {
       res.status(201).send({ comment: result });

@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { checkIdExists, checkUsernameExists } = require("../db/seeds/utils");
 
 exports.selectReviewId = (id) => {
   return db
@@ -50,18 +51,21 @@ exports.selectCommentsById = (review_id) => {
 
 exports.insertComment = (comment, id) => {
   const { username, body } = comment;
-  if (!body) {
+
+  if (!body && username) {
     return Promise.reject({
-      status: 404,
+      status: 400,
       msg: "please provide a comment",
     });
   }
-  return db
-    .query(
-      "INSERT INTO comments (author, body, review_id) VALUES ($1, $2, $3) RETURNING *;",
-      [username, body, id]
-    )
-    .then((result) => {
-      return result.rows[0];
-    });
+  return checkIdExists(id).then(() => {
+    return db
+      .query(
+        "INSERT INTO comments (author, body, review_id) VALUES ($1, $2, $3) RETURNING *;",
+        [username, body, id]
+      )
+      .then((result) => {
+        return result.rows[0];
+      });
+  });
 };

@@ -27,26 +27,8 @@ exports.checkIdExists = (id) => {
   return db
     .query("SELECT * FROM comments WHERE review_id = $1;", [id])
     .then((result) => {
-      if (result.rows.length === 0 && id) {
+      if (result.rows.length === 0) {
         return Promise.reject({ status: 404, msg: "id not found" });
-      }
-    });
-};
-
-exports.checkUsernameExists = (username) => {
-  return db
-    .query("SELECT * FROM comments WHERE author = $1;", [username])
-    .then((result) => {
-      if (result.rows.length === 0 && !username) {
-        return Promise.reject({
-          status: 404,
-          msg: "please provide a username",
-        });
-      } else if (result.rows.length === 0 && username) {
-        return Promise.reject({
-          status: 404,
-          msg: "please provide valid username",
-        });
       }
     });
 };
