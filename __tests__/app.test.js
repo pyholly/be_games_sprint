@@ -145,6 +145,7 @@ describe("/api/reviews/2/comments", () => {
       .get("/api/reviews/2/comments")
       .expect(200)
       .then((response) => {
+        expect(response.body.comments.length).toBe(3);
         response.body.comments.forEach((comment) => {
           expect(comment.review_id).toBe(2);
           expect(typeof comment.review_id).toBe("number");
