@@ -37,7 +37,6 @@ exports.checkUsernameExists = (username) => {
   return db
     .query("SELECT * FROM comments WHERE author = $1;", [username])
     .then((result) => {
-      console.log(result.rows);
       if (result.rows.length === 0 && !username) {
         return Promise.reject({
           status: 404,

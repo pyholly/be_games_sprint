@@ -1,12 +1,8 @@
-const {
-  selectReviewId,
-  selectReviews,
-  selectCommentsById,
-} = require("../models/reviews.model");
 const { checkIdExists, checkUsernameExists } = require("../db/seeds/utils");
 const {
   selectReviewId,
   selectReviews,
+  selectCommentsById,
   insertComment,
 } = require("../models/reviews.model");
 

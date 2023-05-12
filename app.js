@@ -5,12 +5,9 @@ const {
   getReviewId,
   getReviews,
   getCommentsById,
-} = require("./controllers/reviews.controller");
-const {
-  getReviewId,
-  getReviews,
   postComment,
 } = require("./controllers/reviews.controller");
+
 const { getEndPoints } = require("./controllers/api.controller");
 
 app.use(express.json());
