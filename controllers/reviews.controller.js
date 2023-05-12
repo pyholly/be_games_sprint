@@ -1,3 +1,8 @@
+const {
+  selectReviewId,
+  selectReviews,
+  selectCommentsById,
+} = require("../models/reviews.model");
 const { checkIdExists, checkUsernameExists } = require("../db/seeds/utils");
 const {
   selectReviewId,
@@ -18,6 +23,15 @@ exports.getReviews = (req, res) => {
   selectReviews().then((results) => {
     res.status(200).send({ reviews: results });
   });
+};
+
+exports.getCommentsById = (req, res, next) => {
+  const { review_id } = req.params;
+  selectCommentsById(review_id)
+    .then((results) => {
+      res.status(200).send({ comments: results });
+    })
+    .catch(next);
 };
 
 exports.postComment = (req, res, next) => {

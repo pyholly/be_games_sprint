@@ -4,6 +4,11 @@ const { getCategories } = require("./controllers/categories.controller");
 const {
   getReviewId,
   getReviews,
+  getCommentsById,
+} = require("./controllers/reviews.controller");
+const {
+  getReviewId,
+  getReviews,
   postComment,
 } = require("./controllers/reviews.controller");
 const { getEndPoints } = require("./controllers/api.controller");
@@ -17,6 +22,8 @@ app.get("/api", getEndPoints);
 app.get("/api/reviews/:review_id", getReviewId);
 
 app.get("/api/reviews", getReviews);
+
+app.get("/api/reviews/:review_id/comments", getCommentsById);
 
 app.post("/api/reviews/:review_id/comments", postComment);
 
