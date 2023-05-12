@@ -28,3 +28,21 @@ exports.selectReviews = () => {
       return result.rows;
     });
 };
+
+exports.insertComment = (comment, id) => {
+  const { username, body } = comment;
+  if (!body) {
+    return Promise.reject({
+      status: 404,
+      msg: "please provide a comment",
+    });
+  }
+  return db
+    .query(
+      "INSERT INTO comments (author, body, review_id) VALUES ($1, $2, $3) RETURNING *;",
+      [username, body, id]
+    )
+    .then((result) => {
+      return result.rows[0];
+    });
+};

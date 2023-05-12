@@ -138,3 +138,97 @@ describe("/api/reviews", () => {
       });
   });
 });
+
+describe.only("POST /api/reviews/:review_id/comments", () => {
+  test("POST - status: 201 - responds with posted comment", () => {
+    return request(app)
+      .post("/api/reviews/3/comments")
+      .send({
+        username: "mallionaire",
+        body: "Sooo much funnn!",
+      })
+      .expect(201)
+      .then((response) => {
+        expect(response.body.comment.author).toBe("mallionaire");
+        expect(response.body.comment.body).toBe("Sooo much funnn!");
+      });
+  });
+  test("POST - status: 201 - responds with all properties", () => {
+    return request(app)
+      .post("/api/reviews/3/comments")
+      .send({
+        username: "mallionaire",
+        body: "Sooo much funnn!",
+      })
+      .expect(201)
+      .then((response) => {
+        expect(response.body.comment.review_id).toBe(3);
+        expect(typeof response.body.comment.review_id).toBe("number");
+        expect(typeof response.body.comment.author).toBe("string");
+        expect(typeof response.body.comment.body).toBe("string");
+        expect(typeof response.body.comment.comment_id).toBe("number");
+        expect(typeof response.body.comment.votes).toBe("number");
+        expect(typeof response.body.comment.created_at).toBe("string");
+      });
+  });
+  test("POST - status: 400 when client inputs a bad request", () => {
+    return request(app)
+      .post("/api/reviews/notAnID/comments")
+      .send({
+        username: "mallionaire",
+        body: "Sooo much funnn!",
+      })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("POST - status: 404 when client inputs a valid request but id does not exist yet", () => {
+    return request(app)
+      .post("/api/reviews/1000/comments")
+      .send({
+        username: "mallionaire",
+        body: "Sooo much funnn!",
+      })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("id not found");
+      });
+  });
+  test("POST - status: 404 if no username provided", () => {
+    return request(app)
+      .post("/api/reviews/3/comments")
+      .send({
+        username: "",
+        body: "Sooo much funnn!",
+      })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("please provide a username");
+      });
+  });
+  test("POST - status: 404 if invalid username provided", () => {
+    return request(app)
+      .post("/api/reviews/3/comments")
+      .send({
+        username: "cozypanda",
+        body: "Sooo much funnn!",
+      })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("please provide valid username");
+      });
+  });
+  test("POST - status: 404 if no body provided", () => {
+    return request(app)
+      .post("/api/reviews/3/comments")
+      .send({
+        username: "mallionaire",
+        body: "",
+      })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("please provide a comment");
+      });
+  });
+});
