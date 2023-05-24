@@ -43,7 +43,9 @@ exports.postComment = (req, res, next) => {
 exports.updateVotes = (req, res, next) => {
   const { inc_votes } = req.body;
   const { review_id } = req.params;
-  changeVotes(inc_votes, review_id).then((results) => {
-    res.status(200).send({ review: results });
-  });
+  changeVotes(inc_votes, review_id)
+    .then((results) => {
+      res.status(200).send({ review: results });
+    })
+    .catch(next);
 };

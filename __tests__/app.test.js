@@ -269,7 +269,7 @@ describe("POST /api/reviews/:review_id/comments", () => {
 });
 
 describe("PATCH /api/reviews/:review_id", () => {
-  test("patch - status : 200 -  responds with successfully updated", () => {
+  test("PATCH - status : 200 -  responds with successfully updated vote when adding", () => {
     return request(app)
       .patch("/api/reviews/1")
       .send({ inc_votes: 2 })
@@ -278,7 +278,25 @@ describe("PATCH /api/reviews/:review_id", () => {
         expect(response.body.review[0].votes).toBe(3);
       });
   });
-  test("patch - status : 200 -  responds with all properties", () => {
+  test("PATCH - status : 200 -  responds with successfully updated vote when subtract", () => {
+    return request(app)
+      .patch("/api/reviews/12")
+      .send({ inc_votes: -50 })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.review[0].votes).toBe(50);
+      });
+  });
+  test("PATCH - status : 200 -  responds with successfully updated vote when adding", () => {
+    return request(app)
+      .patch("/api/reviews/2")
+      .send({ inc_votes: 20 })
+      .expect(200)
+      .then((response) => {
+        expect(response.body.review[0].votes).toBe(25);
+      });
+  });
+  test("PATCH - status : 200 -  responds with all properties", () => {
     return request(app)
       .patch("/api/reviews/1")
       .send({ inc_votes: 2 })
@@ -294,6 +312,39 @@ describe("PATCH /api/reviews/:review_id", () => {
         expect(typeof response.body.review[0].review_body).toBe("string");
         expect(typeof response.body.review[0].review_img_url).toBe("string");
         expect(typeof response.body.review[0].created_at).toBe("string");
+      });
+  });
+  test("PATCH - status: 400 when client inputs a bad request", () => {
+    return request(app)
+      .patch("/api/reviews/nonsense")
+      .send({
+        inc_votes: 2,
+      })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
+      });
+  });
+  test("PATCH - status: 404 when client inputs a valid request but id does not exist yet", () => {
+    return request(app)
+      .patch("/api/reviews/10000")
+      .send({
+        inc_votes: 2,
+      })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("review not found");
+      });
+  });
+  test("PATCH - status: 400 if inc_vote is not a number", () => {
+    return request(app)
+      .patch("/api/reviews/1")
+      .send({
+        inc_votes: "nonsense",
+      })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("bad request");
       });
   });
 });
