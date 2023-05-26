@@ -275,7 +275,7 @@ describe("PATCH /api/reviews/:review_id", () => {
       .send({ inc_votes: 2 })
       .expect(200)
       .then((response) => {
-        expect(response.body.review[0].votes).toBe(3);
+        expect(response.body.review.votes).toBe(3);
       });
   });
   test("PATCH - status : 200 -  responds with successfully updated vote when subtract", () => {
@@ -284,7 +284,7 @@ describe("PATCH /api/reviews/:review_id", () => {
       .send({ inc_votes: -50 })
       .expect(200)
       .then((response) => {
-        expect(response.body.review[0].votes).toBe(50);
+        expect(response.body.review.votes).toBe(50);
       });
   });
   test("PATCH - status : 200 -  responds with successfully updated vote when adding", () => {
@@ -293,7 +293,7 @@ describe("PATCH /api/reviews/:review_id", () => {
       .send({ inc_votes: 20 })
       .expect(200)
       .then((response) => {
-        expect(response.body.review[0].votes).toBe(25);
+        expect(response.body.review.votes).toBe(25);
       });
   });
   test("PATCH - status : 200 -  responds with all properties", () => {
@@ -302,16 +302,16 @@ describe("PATCH /api/reviews/:review_id", () => {
       .send({ inc_votes: 2 })
       .expect(200)
       .then((response) => {
-        expect(response.body.review[0].review_id).toBe(1);
-        expect(typeof response.body.review[0].review_id).toBe("number");
-        expect(typeof response.body.review[0].votes).toBe("number");
-        expect(typeof response.body.review[0].title).toBe("string");
-        expect(typeof response.body.review[0].category).toBe("string");
-        expect(typeof response.body.review[0].designer).toBe("string");
-        expect(typeof response.body.review[0].owner).toBe("string");
-        expect(typeof response.body.review[0].review_body).toBe("string");
-        expect(typeof response.body.review[0].review_img_url).toBe("string");
-        expect(typeof response.body.review[0].created_at).toBe("string");
+        expect(response.body.review.review_id).toBe(1);
+        expect(typeof response.body.review.review_id).toBe("number");
+        expect(typeof response.body.review.votes).toBe("number");
+        expect(typeof response.body.review.title).toBe("string");
+        expect(typeof response.body.review.category).toBe("string");
+        expect(typeof response.body.review.designer).toBe("string");
+        expect(typeof response.body.review.owner).toBe("string");
+        expect(typeof response.body.review.review_body).toBe("string");
+        expect(typeof response.body.review.review_img_url).toBe("string");
+        expect(typeof response.body.review.created_at).toBe("string");
       });
   });
   test("PATCH - status: 400 when client inputs a bad request", () => {
@@ -344,7 +344,7 @@ describe("PATCH /api/reviews/:review_id", () => {
       })
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("bad request");
+        expect(body.msg).toBe("votes must be a number");
       });
   });
 });

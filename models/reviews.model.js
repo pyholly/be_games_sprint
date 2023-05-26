@@ -70,6 +70,12 @@ exports.insertComment = (comment, id) => {
 };
 
 exports.changeVotes = (inc_votes, review_id) => {
+  if (typeof inc_votes != "number") {
+    return Promise.reject({
+      status: 400,
+      msg: "votes must be a number",
+    });
+  }
   return db
     .query(
       `
@@ -85,6 +91,6 @@ exports.changeVotes = (inc_votes, review_id) => {
           msg: `review not found`,
         });
       }
-      return result.rows;
+      return result.rows[0];
     });
 };
