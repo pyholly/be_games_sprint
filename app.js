@@ -8,9 +8,10 @@ const {
   postComment,
   updateVotes,
 } = require("./controllers/reviews.controller");
-
+const cors = require("cors");
 const { getEndPoints } = require("./controllers/api.controller");
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/api/categories", getCategories);
